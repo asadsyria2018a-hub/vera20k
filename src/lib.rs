@@ -102,7 +102,7 @@ fn android_main(app: AndroidApp) {
 
         log::info!("Building Android event loop");
 
-        let event_loop: winit::event_loop::EventLoop<()> =
+        let mut event_loop: winit::event_loop::EventLoop<()> =
             winit::event_loop::EventLoop::builder()
                 .with_android_app(app)
                 .build()?;
