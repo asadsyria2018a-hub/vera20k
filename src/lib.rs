@@ -112,7 +112,7 @@ fn android_main(app: AndroidApp) {
 
         log::info!("Starting VERA20K event loop");
 
-        event_loop.run_app(&mut game)?;
+        event_loop.run_app_on_demand(&mut game)?;
 
         log::info!("Event loop finished");
 
