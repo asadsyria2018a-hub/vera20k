@@ -7,7 +7,11 @@
 
 use anyhow::Result;
 use winit::event_loop::EventLoop;
+#[cfg(target_os = "android")]
+use winit::platform::android::activity::AndroidApp;
 
+#[cfg(target_os = "android")]
+use winit::platform::android::EventLoopBuilderExtAndroid;
 fn main() -> Result<()> {
     let log_path = match vera20k::util::logging::init_file_logger("ra2") {
         Ok(path) => {
