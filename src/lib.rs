@@ -159,4 +159,3 @@ fn android_main(app: AndroidApp) {
     if let Err(err) = result {
         eprintln!("VERA20K Android error: {err:#}");
     }
-}
