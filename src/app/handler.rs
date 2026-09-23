@@ -1,8 +1,9 @@
 use std::time::Instant;
 
 use winit::{
+    application::ApplicationHandler,
     dpi::PhysicalSize,
-    event::{MouseScrollDelta, WindowEvent},
+    event::{MouseButton, MouseScrollDelta, WindowEvent},
     event_loop::{ActiveEventLoop, ControlFlow},
     keyboard::{KeyCode, PhysicalKey},
     window::WindowId,
@@ -12,15 +13,12 @@ use super::input::dispatch;
 use super::{
     App,
     AppState,
-    ApplicationHandler,
     GameScreen,
-    MouseButton,
     ShellKey,
 };
 
 #[cfg(not(target_os = "android"))]
 use winit::platform::modifier_supplement::KeyEventExtModifierSupplement;
-
 trait ShellWindowModeOperations {
     fn shell_client_size(&self) -> PhysicalSize<u32>;
     fn set_resizable(&mut self, resizable: bool);
