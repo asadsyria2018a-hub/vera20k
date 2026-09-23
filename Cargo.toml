@@ -4,6 +4,9 @@ version = "0.1.0"
 edition = "2024"
 description = "Vera20k Engine — a from-scratch Rust engine for Red Alert 2: Yuri's Revenge"
 autobins = false
+[lib]
+name = "main"
+crate-type = ["cdylib"]
 
 # Main game client
 [[bin]]
@@ -74,7 +77,7 @@ path = "src/bin/bridge-oracle-compare.rs"
 wgpu = "27"
 # winit 0.30 is the latest stable. 0.31 is still in beta.
 # Uses the ApplicationHandler trait pattern (deferred window creation).
-winit = "0.30"
+winit = { version = "0.30", features = ["android-native-activity"] }
 # pollster bridges wgpu's async initialization inside winit's sync event loop.
 pollster = "0.4"
 # bytemuck enables safe transmutation of structs to GPU-friendly byte slices.
