@@ -133,29 +133,3 @@ fn android_main(app: AndroidApp) {
 
     log::logger().flush();
 }
-    let result: Result<()> = (|| {
-        let launch_mode =
-            crate::app::frontend::launch::parse_launch_args(std::env::args_os().skip(1))?;
-
-        let options = match launch_mode {
-            crate::app::frontend::launch::AppLaunchMode::Interactive(options) => options,
-            crate::app::frontend::launch::AppLaunchMode::Usage => return Ok(()),
-            _ => return Ok(()),
-        };
-
-        let event_loop: EventLoop<()> = EventLoop::builder()
-            .with_android_app(app)
-            .build()?;
-
-        let mut game = crate::app::App::new(options);
-
-        event_loop.run_app(&mut game)?;
-
-        game.finish_capture()?;
-
-        Ok(())
-    })();
-
-    if let Err(err) = result {
-        eprintln!("VERA20K Android error: {err:#}");
-    }
