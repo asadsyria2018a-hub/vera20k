@@ -7,7 +7,14 @@ autobins = false
 [lib]
 name = "main"
 crate-type = ["cdylib"]
+[package.metadata.android]
+package = "com.vera20k.game"
+apk_name = "vera20k"
+build_targets = ["aarch64-linux-android"]
 
+[package.metadata.android.sdk]
+min_sdk_version = 23
+target_sdk_version = 35
 # Main game client
 [[bin]]
 name = "vera20k"
