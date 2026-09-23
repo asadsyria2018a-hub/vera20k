@@ -6,7 +6,7 @@ use crate::ui::shell::list::ShellListGeometry;
 use std::time::Instant;
 use winit::event::{KeyEvent, MouseButton};
 use winit::keyboard::{Key, NamedKey};
-use winit::platform::modifier_supplement::KeyEventExtModifierSupplement;
+
 
 pub(crate) fn layout(state: &AppState) -> Option<KeyboardLayout> {
     let dialog = state.frontend.keyboard_dialog.as_ref()?;
