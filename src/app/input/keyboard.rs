@@ -336,7 +336,11 @@ pub(crate) fn key(state: &mut AppState, event: &KeyEvent) {
     if !dialog.capture_focused {
         return;
     }
-    let unmodified = event.key_without_modifiers();
+    #[cfg(target_os = "android")]
+let unmodified = event.logical_key.clone();
+
+#[cfg(not(target_os = "android"))]
+let unmodified = event.key_without_modifiers();
     let logical = hotkeys::binding_logical_key(&event.logical_key, &unmodified, event.location);
     let Some(vk) = hotkeys::logical_virtual_key(logical, event.location) else {
         return;
