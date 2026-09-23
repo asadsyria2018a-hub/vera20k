@@ -12,7 +12,9 @@ use winit::platform::android::activity::AndroidApp;
 
 #[cfg(target_os = "android")]
 use winit::platform::android::EventLoopBuilderExtAndroid;
-fn run(android_app: Option<AndroidApp>) -> Result<()> {
+fn run(
+    #[cfg(target_os = "android")] android_app: Option<AndroidApp>,
+) -> Result<()> {
     let log_path = match vera20k::util::logging::init_file_logger("ra2") {
         Ok(path) => {
             eprintln!("Logging to {}", path.display());
@@ -66,7 +68,13 @@ fn run(android_app: Option<AndroidApp>) -> Result<()> {
 
     // Create the OS event loop. This drives the entire application:
     // window events, input, redraws, lifecycle events.
-    let event_loop: EventLoop<()> = EventLoop::builder().build()?;
+    #[cfg(target_os = "android")]
+let event_loop: EventLoop<()> = EventLoop::builder()
+    .with_android_app(android_app.unwrap())
+    .build()?;
+
+#[cfg(not(target_os = "android"))]
+let event_loop: EventLoop<()> = EventLoop::new()?;
 
     // Create the app and hand control to the event loop.
     // This blocks until the window is closed.
@@ -95,4 +103,14 @@ fn run(android_app: Option<AndroidApp>) -> Result<()> {
     log::info!("RA2 Engine shut down cleanly");
     log::logger().flush();
     Ok(())
+}
+#[cfg(not(target_os = "android"))]
+fn main() -> Result<()> {
+    run()
+}
+
+#[cfg(target_os = "android")]
+#[unsafe(no_mangle)]
+fn android_main(app: AndroidApp) {
+    let _ = run(Some(app));
 }
