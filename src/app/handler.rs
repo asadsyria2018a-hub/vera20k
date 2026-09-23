@@ -5,10 +5,16 @@
 
 use super::input::dispatch;
 use super::{
-    ActiveEventLoop, App, AppState, ApplicationHandler, ControlFlow, GameScreen, Instant, KeyCode,
-    KeyEventExtModifierSupplement, MouseButton, MouseScrollDelta, PhysicalKey, PhysicalSize,
-    ShellKey, WindowEvent, WindowId,
+    ActiveEventLoop,
+    App,
+    AppState,
+    ApplicationHandler,
+    MouseButton,
+    // باقي الأسماء الموجودة عندك
 };
+
+#[cfg(not(target_os = "android"))]
+use winit::platform::modifier_supplement::KeyEventExtModifierSupplement;
 
 trait ShellWindowModeOperations {
     fn shell_client_size(&self) -> PhysicalSize<u32>;
