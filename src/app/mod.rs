@@ -11,7 +11,7 @@ use winit::dpi::PhysicalSize;
 use winit::event::{MouseButton, MouseScrollDelta, WindowEvent};
 use winit::event_loop::{ActiveEventLoop, ControlFlow};
 use winit::keyboard::{KeyCode, ModifiersState, PhysicalKey};
-use winit::platform::modifier_supplement::KeyEventExtModifierSupplement;
+
 use winit::window::{Window, WindowAttributes, WindowId};
 
 use crate::app::presentation::render;
