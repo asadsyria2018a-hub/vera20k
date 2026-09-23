@@ -1,18 +1,44 @@
-name: CI
+name: Android APK
+
 on:
-  pull_request:
+  workflow_dispatch:
+
 jobs:
-  test:
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  build-android:
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v6
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-      - name: Install Linux deps
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libasound2-dev libudev-dev
-      - run: cargo check
-      - run: cargo test
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Set up JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+
+      - name: Install Android SDK and NDK
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;27.2.12479018"
+
+      - name: Install cargo-apk
+        run: cargo install cargo-apk --locked
+
+      - name: Build APK
+        run: cargo apk build --release --bin vera20k
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: vera20k-apk
+          path: target/android-artifacts/release/apk/*.apk
