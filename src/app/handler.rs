@@ -685,7 +685,11 @@ impl ApplicationHandler for App {
                         return;
                     }
 
-                    let key_without_modifiers = event.key_without_modifiers();
+                    #[cfg(target_os = "android")]
+let key_without_modifiers = event.logical_key.clone();
+
+#[cfg(not(target_os = "android"))]
+let key_without_modifiers = event.key_without_modifiers();
                     let binding_key = crate::app::input::hotkeys::binding_logical_key(
                         &event.logical_key,
                         &key_without_modifiers,
