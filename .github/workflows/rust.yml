@@ -35,10 +35,10 @@ jobs:
         run: cargo install cargo-apk --locked
 
       - name: Build APK
-        run: cargo apk build --release --lib
+        run: cargo apk build --lib
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: vera20k-apk
-          path: target/android-artifacts/release/apk/*.apk
+          path: target/android-artifacts/debug/apk/*.apk
