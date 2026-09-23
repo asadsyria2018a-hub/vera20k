@@ -77,6 +77,62 @@ use winit::platform::android::EventLoopBuilderExtAndroid;
 #[cfg(target_os = "android")]
 #[unsafe(no_mangle)]
 fn android_main(app: AndroidApp) {
+    let log_path = match crate::util::logging::init_file_logger("ra2") {
+        Ok(path) => Some(path),
+        Err(err) => {
+            eprintln!("Failed to initialize file logger: {err:#}");
+            None
+        }
+    };
+
+    crate::util::logging::install_panic_hook(log_path.as_deref());
+
+    log::info!("VERA20K Android starting");
+
+    let result: anyhow::Result<()> = (|| {
+        let launch_mode =
+            crate::app::frontend::launch::parse_launch_args(std::env::args_os().skip(1))?;
+
+        let options = match launch_mode {
+            crate::app::frontend::launch::AppLaunchMode::Interactive(options) => options,
+            crate::app::frontend::launch::AppLaunchMode::Usage => return Ok(()),
+            _ => return Ok(()),
+        };
+
+        log::info!("Building Android event loop");
+
+        let event_loop: winit::event_loop::EventLoop<()> =
+            winit::event_loop::EventLoop::builder()
+                .with_android_app(app)
+                .build()?;
+
+        log::info!("Creating VERA20K app");
+
+        let mut game = crate::app::App::new(options);
+
+        log::info!("Starting VERA20K event loop");
+
+        event_loop.run_app(&mut game)?;
+
+        log::info!("Event loop finished");
+
+        game.finish_capture()?;
+
+        Ok(())
+    })();
+
+    match result {
+        Ok(()) => {
+            log::info!("VERA20K Android shut down cleanly");
+        }
+        Err(err) => {
+            log::error!("VERA20K Android ERROR: {err:#}");
+            eprintln!("VERA20K Android ERROR: {err:#}");
+        }
+    }
+
+    log::logger().flush();
+}
     let result: Result<()> = (|| {
         let launch_mode =
             crate::app::frontend::launch::parse_launch_args(std::env::args_os().skip(1))?;
