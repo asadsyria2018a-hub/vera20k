@@ -5,7 +5,7 @@ edition = "2024"
 description = "Vera20k Engine — a from-scratch Rust engine for Red Alert 2: Yuri's Revenge"
 autobins = false
 [lib]
-name = "main"
+name = "vera20k"
 path = "src/main.rs"
 crate-type = ["cdylib"]
 [package.metadata.android]
