@@ -6,6 +6,7 @@ description = "Vera20k Engine — a from-scratch Rust engine for Red Alert 2: Yu
 autobins = false
 [lib]
 name = "main"
+path = "src/main.rs"
 crate-type = ["cdylib"]
 [package.metadata.android]
 package = "com.vera20k.game"
