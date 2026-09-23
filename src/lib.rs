@@ -67,7 +67,8 @@ use anyhow::Result;
 
 #[cfg(target_os = "android")]
 use winit::event_loop::EventLoop;
-
+#[cfg(target_os = "android")]
+use winit::platform::run_on_demand::EventLoopExtRunOnDemand;
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
