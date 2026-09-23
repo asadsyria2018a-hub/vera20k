@@ -62,3 +62,14 @@ pub mod skirmish_persistence;
 // Source-level dependency guards for the domain-boundaries ledger.
 #[cfg(test)]
 mod architecture_guards;
+#[cfg(target_os = "android")]
+use winit::platform::android::activity::AndroidApp;
+
+#[cfg(target_os = "android")]
+use winit::platform::android::EventLoopBuilderExtAndroid;
+
+#[cfg(target_os = "android")]
+#[unsafe(no_mangle)]
+fn android_main(app: AndroidApp) {
+    // Android entry point
+}
